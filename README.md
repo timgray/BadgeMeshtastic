@@ -1,3 +1,61 @@
+# WARNING: PLATFORMIO 6.2.0 IS BROKEN FOR THIS BUILD
+
+**DO NOT UPGRADE THIS PROJECT TO PLATFORMIO 6.2.0.**
+
+This repository has been verified to successfully build the `t5s3-epaper-v2` target with:
+
+    Python 3.12.14
+    PlatformIO Core 6.1.19
+    pioarduino internal PlatformIO Core 6.1.19
+
+## IMPORTANT: THERE ARE TWO PLATFORMIO INSTALLATIONS
+
+The pioarduino build environment maintains its own PlatformIO installation in addition to the PlatformIO installation used to start the build.
+
+Check BOTH versions before trying to troubleshoot build failures:
+
+    pio --version
+    ~/.platformio/penv/bin/pio --version
+
+Both must report:
+
+    PlatformIO Core, version 6.1.19
+
+If your normal PlatformIO installation is newer, pin it to 6.1.19.
+
+If the internal pioarduino PlatformIO environment reports 6.2.0, pin it with:
+
+    uv pip install --python ~/.platformio/penv/bin/python "platformio==6.1.19"
+
+## MISLEADING SCONS / FORTRAN ERROR
+
+PlatformIO 6.2.0 can cause this build to fail with:
+
+    ModuleNotFoundError: No module named 'SCons.Tool.FortranCommon'
+
+This does NOT mean the firmware requires Fortran.
+
+The error is caused by a PlatformIO/pioarduino/SCons toolchain compatibility problem. Installing Fortran packages, changing the firmware source, reinstalling ESP-IDF, or debugging the Meshtastic code will not correct this problem.
+
+We reproduced this failure with PlatformIO 6.2.0 and successfully built the same source after pinning BOTH PlatformIO environments to 6.1.19.
+
+## KNOWN WORKING BUILD
+
+The following configuration successfully built this repository on September 26, 2026:
+
+    Environment: WSL2 / Linux
+    Python: 3.12.14
+    PlatformIO Core: 6.1.19
+    Internal pioarduino PlatformIO Core: 6.1.19
+    Target: t5s3-epaper-v2
+
+    Build result:
+    SUCCESS
+
+**DO NOT UPGRADE PLATFORMIO FOR THIS PROJECT WITHOUT VERIFYING THAT A COMPLETE FIRMWARE BUILD STILL SUCCEEDS.**
+
+---
+
 <div align="center" markdown="1">
 
 <img src=".github/meshtastic_logo.png" alt="Meshtastic Logo" width="80"/>
